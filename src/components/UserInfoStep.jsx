@@ -1,4 +1,5 @@
 import { ContinueButton } from "./ContinueButton"
+import { InputFeild } from "./InputFeild"
 
 export const UserInfoStep = ({ formValues, setFormValues, nextStep, currentStep, formErrors, setFormErrors }) => {
 
@@ -9,43 +10,30 @@ export const UserInfoStep = ({ formValues, setFormValues, nextStep, currentStep,
     const handleNext = (event) => {
         event.preventDefault();
 
-        if (setFormValues.firstName) {
+        if (!formValues.firstName) {
             setFormErrors((prev) => ({ ...prev, firstName: "Hooson baina" }))
         }
 
-        if (setFormValues.lastName) {
+        if (!formValues.lastName) {
             setFormErrors((prev) => ({ ...prev, lastName: "Hooson baina" }))
         }
 
-        console.log(formErrors);
+        if (!formValues.firstName || !formValues.lastName) {
+            return;
+        }
 
-        // nextStep();
+        nextStep();
     }
 
 
     return (
-        <>
-            <div className="space-y-2">
-                <label>
-                    First name<span className="text-red-700">*</span>
-                </label>
-                <br />
-                <input onChange={onChange} name="firstName" placeholder="First name..." className="border" />
+        <form className="mt-7" onSubmit={handleNext}>
 
-                {formErrors.firstName && <p className="text-red-600">{formErrors.firstName}</p>}
-            </div>
+            <InputFeild required label='First name' name="firstName" onChange={onChange} placeholder={'First name...'} error={formErrors['firstName']} value={formValues.firstName} />
 
-            <div className="space-y-2">
-                <label>
-                    Last name<span className="text-red-700">*</span>
-                </label>
-                <br />
-                <input onChange={onChange} name="lastName" placeholder="Last name..." className="border" />
+            <InputFeild required label='Last name' name="lastName" onChange={onChange} placeholder={'Last name...'} error={formErrors['lastName']} value={formValues.lastName} />
 
-                {formErrors.lastName && <p className="text-red-600">{formErrors.lastName}</p>}
-            </div>
-
-            <ContinueButton nextStep={nextStep} currentStep={currentStep} />
-        </>
+            <ContinueButton nextStep={handleNext} currentStep={currentStep} />
+        </form>
     )
 }

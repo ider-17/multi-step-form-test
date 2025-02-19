@@ -1,8 +1,9 @@
 'use client'
 
+import { ContactInfoStep } from "@/components/ContactInfoStep";
 import { FormHeader } from "@/components/FormHeader";
 import { UserInfoStep } from "@/components/UserInfoStep";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const [currentStep, setCurrentStep] = useState(0)
@@ -27,26 +28,43 @@ export default function Home() {
     confirmPassword: ""
   })
 
-  const steps = [UserInfoStep];
+  const steps = [UserInfoStep, ContactInfoStep];
   const Components = steps[currentStep];
-  const nextStep = (event) => {
-    event.preventDefault()
-    setCurrentStep((prev) => prev + 1)
+
+  const prevStep = () => {
+    setCurrentStep((prev) => prev - 1);
   }
+
+  const nextStep = (event) => {
+    setCurrentStep((prev) => prev + 1);
+
+    window.localStorage.setItem('multi-step-form', JSON.stringify({ formValues, currentStep: currentStep + 1 }))
+  }
+
+  useEffect(() => {
+    const localStorage = JSON.parse(window.localStorage.getItem('multi-step-form'))
+
+    if (!localStorage) return;
+
+    setFormValues(localStorage.formValues)
+    setCurrentStep(localStorage.currentStep)
+
+  }, [])
 
   return (
     <main className="w-[480px] h-[655px] p-8 bg-white">
       <FormHeader />
 
-      <form className="mt-7">
+      <div className="mt-7">
         <Components
           formValues={formValues}
           setFormValues={setFormValues}
           formErrors={formErrors}
           setFormErrors={setFormErrors}
           currentStep={currentStep}
-          nextStep={nextStep} />
-      </form>
+          nextStep={nextStep}
+          prevStep={prevStep} />
+      </div>
 
     </main>
   );

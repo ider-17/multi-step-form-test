@@ -1,9 +1,9 @@
-export const ContinueButton = ({ nextStep, currentStep }) => {
+export const ContinueButton = ({ nextStep, currentStep, prevStep }) => {
     return (
-        <div>
-            {currentStep != 1 && <button>Back</button>}
+        <div className="flex justify-center gap-2">
+            {currentStep != 0 && <button type="button" onClick={prevStep}>Back</button>}
 
-            <button onClick={nextStep}>Continue<span>{currentStep}/3</span></button>
+            <button type="submit">Continue<span>{currentStep}/3</span></button>
         </div>
     )
 }
