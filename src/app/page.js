@@ -2,6 +2,7 @@
 
 import { ContactInfoStep } from "@/components/ContactInfoStep";
 import { FormHeader } from "@/components/FormHeader";
+import { ProfileInfoStep } from "@/components/ProfileInfoStep";
 import { UserInfoStep } from "@/components/UserInfoStep";
 import { useEffect, useState } from "react";
 
@@ -15,7 +16,9 @@ export default function Home() {
     email: "",
     phoneNumber: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
+    date: "",
+    profileImage: ""
   })
 
   const [formErrors, setFormErrors] = useState({
@@ -25,10 +28,12 @@ export default function Home() {
     email: "",
     phoneNumber: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
+    date: "",
+    profileImage: ""
   })
 
-  const steps = [UserInfoStep, ContactInfoStep];
+  const steps = [UserInfoStep, ContactInfoStep, ProfileInfoStep];
   const Components = steps[currentStep];
 
   const prevStep = () => {
