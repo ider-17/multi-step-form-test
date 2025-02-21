@@ -1,29 +1,30 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { InputFeild } from "./InputFeild"
+import { ContinueButton } from "./ContinueButton";
 
 export const ProfileInfoStep = ({ formValues, setFormValues, nextStep, currentStep, formErrors, setFormErrors, prevStep }) => {
 
     const imageRef = useRef();
 
-    const [url, setUrl] = useState('');
+    const [preview, setPreview] = useState('');
 
     const onChange = (event) => {
-        setUrl(window.URL.createObjectURL(event.target.files[0]))
+        setFormValues((prev) => ({ ...prev, [event.target.name]: event.target.value }))
     }
 
-    // const onChange = (event) => {
-    //     setFormValues((prev) => ({ ...prev, [event.target.name]: event.target.value }))
-    //     setFormErrors((prev) => ({ ...prev, [event.target.name]: '' }))
-    // }
+    const imageHandler = (event) => {
+        setFormValues((prev) => ({ ...prev, [event.target.name]: event.target.files[0] }))
+        setPreview(window.URL.createObjectURL(event.target.files[0]))
+    }
 
     const uploadImage = () => {
-        
+        imageRef.current.click()
     }
 
     const handleNext = (event) => {
         event.preventDefault();
 
-        // nextStep();
+        nextStep();
     }
 
     return (
@@ -31,14 +32,13 @@ export const ProfileInfoStep = ({ formValues, setFormValues, nextStep, currentSt
 
             <InputFeild type="date" required label='Date' name="date" onChange={onChange} error={formErrors['date']} />
 
-            {url && <img className="h-40 w-full object-cover" src={url} />}
+            <div className="mt-7 h-[180px] w-full bg-gray-100 rounded-lg flex justify-center items-center cursor-pointer text-center " onClick={uploadImage}>
+                {preview ? <img className="h-full w-full object-cover" src={preview} /> : "Add image"}
+            </div>
 
-            <div onClick={uploadImage}>Add image</div>
+            <input className="hidden" type="file" ref={imageRef} onChange={imageHandler} name="profileImage" />
 
-            <input className="hidden" type="file" ref={imageRef} />
-
-            {/* <InputFeild type="file" required label='Profile image' name="profileImage" onChange={onChange} error={formErrors['profileImage']} /> */}
-
+            <ContinueButton nextStep={handleNext} prevStep={prevStep} currentStep={currentStep} />
         </form>
     )
 }

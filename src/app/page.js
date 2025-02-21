@@ -40,7 +40,8 @@ export default function Home() {
     setCurrentStep((prev) => prev - 1);
   }
 
-  const nextStep = (event) => {
+  const nextStep = () => {
+    if (currentStep == steps.length - 1) return;
     setCurrentStep((prev) => prev + 1);
 
     window.localStorage.setItem('multi-step-form', JSON.stringify({ formValues, currentStep: currentStep + 1 }))
@@ -56,20 +57,20 @@ export default function Home() {
 
   }, [])
 
-  return (
-    <main className="w-[480px] h-[655px] p-8 bg-white">
-      <FormHeader />
+  const isEqual = currentStep == steps.length
 
-      <div className="mt-7">
-        <Components
-          formValues={formValues}
-          setFormValues={setFormValues}
-          formErrors={formErrors}
-          setFormErrors={setFormErrors}
-          currentStep={currentStep}
-          nextStep={nextStep}
-          prevStep={prevStep} />
-      </div>
+  return (
+    <main className={`relative w-[480px] h-[655px] p-8 bg-white rounded-xl p-8 ${isEqual && "h-fit"}`}>
+      <FormHeader title={isEqual ? "You're All Set 🔥" : "Join Us! 😎"} description={isEqual ? "We have received your submission. Thank you!" : "Please provide all current information accurately."} />
+
+      {currentStep < steps.length && <Components
+        formValues={formValues}
+        setFormValues={setFormValues}
+        formErrors={formErrors}
+        setFormErrors={setFormErrors}
+        currentStep={currentStep}
+        nextStep={nextStep}
+        prevStep={prevStep} />}
 
     </main>
   );

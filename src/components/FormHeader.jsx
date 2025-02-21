@@ -1,8 +1,9 @@
-export function FormHeader() {
+export function FormHeader({ title, description }) {
     return (
         <div>
-            <h1>Join Us! 😎</h1>
-            <p>Please provide all current information accurately.</p>
+            <img src="logo.svg" />
+            <h1>{title}</h1>
+            <p className="text-gray-400">{description}</p>
         </div>
     )
 }

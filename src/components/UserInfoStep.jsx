@@ -32,6 +32,8 @@ export const UserInfoStep = ({ formValues, setFormValues, nextStep, currentStep,
             <InputFeild required label='First name' name="firstName" onChange={onChange} placeholder={'First name...'} error={formErrors['firstName']} value={formValues.firstName} />
 
             <InputFeild required label='Last name' name="lastName" onChange={onChange} placeholder={'Last name...'} error={formErrors['lastName']} value={formValues.lastName} />
+            
+            <InputFeild required label='User name' name="userName" onChange={onChange} placeholder={'User name...'} error={formErrors['userName']} value={formValues.userName} />
 
             <ContinueButton nextStep={handleNext} currentStep={currentStep} />
         </form>
